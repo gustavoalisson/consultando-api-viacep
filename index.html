@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="style.css"> 
+
+    <title>Consultar Cep</title>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Consultar CEP</h1>
+        <form>
+            <div class="form-group">
+              <label for="campoCep">CEP</label>
+              <input type="text" class="form-control" id="cep" maxlength="9" placeholder="Digite o seu CEP">
+            </div>
+            <div class="form-group">
+              <label for="campoLogradouro">Logradouro</label>
+              <input type="text" class="form-control" id="logradouro" >
+            </div>
+            <div class="form-group">
+                <label for="campoBairro">Bairro</label>
+                <input type="text" class="form-control" id="bairro">
+              </div>
+
+              <div class="form-group">
+                <label for="campoLocalidade">Localidade</label>
+                <input type="text" class="form-control" id="localidade">
+              </div>
+
+              <div class="form-group">
+                <label for="campoUF">UF</label>
+                <input type="text" class="form-control" id="uf">
+              </div>
+            
+          </form>
+        
+    </div>
+    
+
+
+    <!--Meu Script-->
+    <script>
+      const cep = document.querySelector("#cep")
+
+      const resultadoCampo = function(result){
+        for(const campo in result){ // para cada result esta armazenando na variavel campó
+          if(document.querySelector("#" + campo)){ // está selecionando o elemento pelo id
+            document.querySelector("#" + campo).value = result[campo]
+          }
+           
+        }
+      }
+
+      cep.addEventListener("blur", function(){
+        const validaCep = cep.value.replace('-', '')
+        fetch(`https://viacep.com.br/ws/${validaCep}/json/`)
+          .then(function(response){
+            return response.json()
+          })
+          .then(function(data){
+            resultadoCampo(data)
+          })
+          .catch(function (e){
+            alert('cep inválido')
+          })
+      })
+    </script>
+    
+</body>
+</html>
